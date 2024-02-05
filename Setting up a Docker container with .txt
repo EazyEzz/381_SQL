@@ -1,0 +1,52 @@
+Setting up a Docker container with SQL Server 2019 Developer Edition involves several steps. Here's a general guide on how to do it:
+
+### Requirements
+- Docker installed on your machine. If you don't have Docker, you can download and install it from [Docker's official website](https://www.docker.com/products/docker-desktop).
+- Sufficient system resources (RAM, CPU) to run a SQL Server container.
+
+### Steps to Set Up SQL Server 2019 Developer Edition in a Docker Container
+
+1. **Pull the SQL Server 2019 Image from Docker Hub**
+   Open a command-line interface (CLI) and pull the SQL Server 2019 Developer Edition image from Docker Hub using the following command:
+
+   ```bash
+   docker pull mcr.microsoft.com/mssql/server:2019-latest
+   ```
+
+2. **Run the SQL Server Container**
+   After the image is downloaded, run the container. Replace `<YourPassword>` with a strong password (the password must meet SQL Server's password policy).
+
+   ```bash
+   docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=<YourPassword>" \
+   -p 1433:1433 --name sqlserver2019 \
+   -d mcr.microsoft.com/mssql/server:2019-latest
+   ```
+
+   - `ACCEPT_EULA=Y` is required to accept the End-User Licensing Agreement.
+   - `SA_PASSWORD` is the password for the SA (System Administrator) account.
+   - `-p 1433:1433` maps the default SQL Server port to the same port on your host machine.
+   - `--name` gives your container a custom name.
+   - `-d` runs the container in detached mode.
+
+3. **Verify the Container is Running**
+   Use the following command to check the status of your Docker containers:
+
+   ```bash
+   docker ps
+   ```
+
+   You should see your SQL Server container listed.
+
+4. **Connect to the SQL Server Instance**
+   - You can connect to the SQL Server instance using SQL Server Management Studio (SSMS) or Azure Data Studio. Use the server name as `localhost`, the username as `sa`, and the password you set earlier.
+   - If you're running Docker on a remote server, use the server's IP address instead of `localhost`.
+
+5. **Manage Your Database**
+   Once connected, you can start creating databases, tables, and running queries as you would on a normal SQL Server instance.
+
+### Additional Considerations
+- Regularly back up your data.
+- Monitor the resource usage to ensure the container performs optimally.
+- For production environments, consider using the appropriate edition of SQL Server and follow security best practices.
+
+Remember, SQL Server 2019 Developer Edition is free but it's licensed for development and testing, not for production environments. Always check the most recent documentation and licensing terms from Microsoft for compliance.
